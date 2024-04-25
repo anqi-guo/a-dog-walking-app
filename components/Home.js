@@ -1,9 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import MapView from 'react-native-maps'
-import LocationManager from './LocationManager'
+import LocationManager, { verifyPermissions } from './LocationManager'
 
 export default function Home() {
+  useEffect(() => {
+    verifyPermissions();
+  }, []);
+
   return (
     <View style={styles.container}>
       <MapView
