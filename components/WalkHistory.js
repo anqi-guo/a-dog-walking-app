@@ -21,10 +21,9 @@ export default function WalkHistory() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.itemContainer}>
-            <Text>{item.id}</Text>
-            {/* <Text>{item.date}</Text>
-            <Text>{item.duration} minutes</Text>
-            <Text>{item.distance} km</Text> */}
+            <Text>{item.date}</Text>
+            <Text>Duration: {item.duration} minutes</Text>
+            <Text>Distance: {item.distance} km</Text>
           </View>
         )}
       />

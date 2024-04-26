@@ -2,8 +2,6 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from "react-nati
 import React, { useState, useEffect, useRef } from "react";
 import MapView, { Polyline } from "react-native-maps";
 import * as Location from "expo-location";
-import Monitor from "./Monitor";
-import { addWalk } from "../firebase-files/firebaseHelper";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 //Walk screen allows the user to record walk route on a map, walk duration and time. 
@@ -69,8 +67,7 @@ export default function Home() {
       if (positions.length < 2) {
         alert("You need to walk more to record a walk!");
       } 
-      navigation.navigate("Monitor", { positions });
-      await addWalk({ positions });
+      navigation.navigate("Monitor", { positions, isNew: true });
     } 
     setPositions([]);
     setIsTracking((prevIsTracking) => !prevIsTracking);

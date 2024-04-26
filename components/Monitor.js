@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import * as turf from "@turf/turf";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { addWalk } from "../firebase-files/firebaseHelper";
 
 // Monitor component to display the duration and distance of a walk
 export default function Monitor() {
@@ -10,15 +11,30 @@ export default function Monitor() {
   const [distance, setDistance] = useState(0);
   const [region, setRegion] = useState(null);
 
-  const navigation = useNavigation();
   const route = useRoute();
   const positions = route.params.positions;
+  const isNew = route.params.isNew;
 
   useEffect(() => {
-    setDuration(calculateDuration(positions));
-    setDistance(calculateTotalDistance(positions));
+    const duration = calculateDuration(positions);
+    const distance = calculateTotalDistance(positions);
+    setDuration(duration);
+    setDistance(distance);
     zoom();
+    if (isNew) {
+      addWalkToFirebase(duration, distance);
+    }
   }, [positions]);
+
+  const addWalkToFirebase = async (duration, distance) => {
+    const walk = {
+      date: new Date(positions[0].timestamp).toLocaleDateString(),
+      duration: duration,
+      distance: distance,
+      positions: positions,
+    };
+    await addWalk(walk);
+  }
 
   // Function to calculate the duration of the walk
   const calculateDuration = (positions) => {
