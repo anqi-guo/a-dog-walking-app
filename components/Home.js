@@ -4,6 +4,7 @@ import MapView, { Polyline } from "react-native-maps";
 import * as Location from "expo-location";
 import Monitor from "./Monitor";
 import { addWalk } from "../firebase-files/firebaseHelper";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 //Walk screen allows the user to record walk route on a map, walk duration and time. 
 //The user can also take photos while walk the dog, the photo will be pined on the route map. 
@@ -11,9 +12,9 @@ export default function Home() {
   const [positions, setPositions] = useState([]);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [isTracking, setIsTracking] = useState(false);
-  const [showMonitor, setShowMonitor] = useState(false);
 
   const mapRef = useRef(null);
+  const navigation = useNavigation();
 
   // Get the current location and start tracking
   useEffect(() => {
@@ -63,16 +64,15 @@ export default function Home() {
   };
 
   // Function to toggle tracking
-  const handleToggleTracking = () => {
+  const handleToggleTracking = async() => {
     if (isTracking) { // If the user stops the walk
       if (positions.length < 2) {
         alert("You need to walk more to record a walk!");
       } 
-      setShowMonitor(true)
-    } else {
-      setPositions([]);
-      setShowMonitor(false);
-    }
+      navigation.navigate("Monitor", { positions });
+      await addWalk({ positions });
+    } 
+    setPositions([]);
     setIsTracking((prevIsTracking) => !prevIsTracking);
   };
 
@@ -107,11 +107,6 @@ export default function Home() {
           lineDashPattern={[1, 0]}
         />
       </MapView>
-      {showMonitor && (
-        <View style={styles.monitorContainer}>
-          <Monitor positions={positions} />
-        </View>
-      )}
       <View style={{ flexDirection: "row" }}>
         <TouchableOpacity style={styles.button} onPress={handleToggleTracking}>
           <Text style={styles.buttonText}>{isTracking ? "End" : "Go"}</Text>

@@ -2,13 +2,17 @@ import { StyleSheet, Text, View, Dimensions } from "react-native";
 import React, { useState, useEffect } from "react";
 import * as turf from "@turf/turf";
 import MapView, { Marker, Polyline } from "react-native-maps";
-
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 // Monitor component to display the duration and distance of a walk
-export default function Monitor({ positions }) {
+export default function Monitor() {
   const [duration, setDuration] = useState(0);
   const [distance, setDistance] = useState(0);
   const [region, setRegion] = useState(null);
+
+  const navigation = useNavigation();
+  const route = useRoute();
+  const positions = route.params.positions;
 
   useEffect(() => {
     setDuration(calculateDuration(positions));
@@ -123,11 +127,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-evenly",
     alignItems: "center",
-    borderWidth: 1,
   },
   textContainer: {
     height: '10%',
     justifyContent: "center",
+    color: "white",
   },
   text: {
     fontSize: width * 0.04,
