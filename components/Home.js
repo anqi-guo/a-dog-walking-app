@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import MapView, { Polyline } from "react-native-maps";
 import * as Location from "expo-location";
 import Monitor from "./Monitor";
+import { addWalk } from "../firebase-files/firebaseHelper";
 
 //Walk screen allows the user to record walk route on a map, walk duration and time. 
 //The user can also take photos while walk the dog, the photo will be pined on the route map. 
