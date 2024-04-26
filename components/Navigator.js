@@ -4,7 +4,7 @@ import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Entypo, MaterialIcons } from '@expo/vector-icons';
+import { Entypo, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import Walk from './Walk';
 import Monitor from './Monitor';
 import WalkHistory from './WalkHistory';
@@ -33,6 +33,21 @@ export function TabScreen() {
             <Entypo name="list" size={size} color={color} />
           ),
         }}
+      />
+      <Tab.Screen name="Walk" component={Walk} 
+        options={({ navigation }) => ({
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="directions-walk" size={size} color={color} />
+          ),
+          tabBarStyle: { display: 'none' },
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate("Walks")}>
+              <View style={{ marginLeft: 10 }}>
+                <Ionicons name="arrow-back" size={24} color="black" />
+              </View>
+            </TouchableOpacity>
+          ),
+        })}
       />
       <Tab.Screen name="Profile" component={Profile} 
         options={{

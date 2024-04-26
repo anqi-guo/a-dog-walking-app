@@ -47,12 +47,6 @@ export default function WalkHistory() {
           </TouchableOpacity>
         )}
       />
-       <TouchableOpacity
-        style={styles.plusButtonContainer}
-        onPress={() => navigation.navigate('Walk')}
-      >
-        <Text style={{ fontSize: 20 }}>+</Text>
-      </TouchableOpacity>
     </View>
   )
 }
