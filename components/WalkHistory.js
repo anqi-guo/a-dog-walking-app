@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { onSnapshot, collection } from 'firebase/firestore';
 import { db } from '../firebase-files/firebaseSetup';
 import { useNavigation } from '@react-navigation/native';
-import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome, Feather } from '@expo/vector-icons';
 import { deleteWalk, updateWalk } from '../firebase-files/firebaseHelper';
 
 export default function WalkHistory() {
@@ -40,7 +40,7 @@ export default function WalkHistory() {
                 : <FontAwesome name="heart-o" size={24} color="black" /> }
               </TouchableOpacity>
               <TouchableOpacity onPress={async() => await deleteWalk(item.id)}>
-                <FontAwesome5 name="trash-alt" size={24} color="black" />
+                <Feather name="trash-2" size={24} color="black" />
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
