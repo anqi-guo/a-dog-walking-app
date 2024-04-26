@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import MapView, { Polyline } from "react-native-maps";
 import * as Location from "expo-location";
@@ -120,6 +120,8 @@ export default function Home() {
   );
 }
 
+const { width, height } = Dimensions.get("window");
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -131,17 +133,16 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#2E86C1',
-    padding: 10,
-    borderRadius: 40,
-    width: 80,
-    height: 80,
+    borderRadius: width * .1,
+    width: width * .2,
+    height: width * .2,
     justifyContent: "center",
     alignItems: "center",
-    margin: 20,
+    marginBottom: height * .1,
   },
   buttonText: {
     color: "white",
-    fontSize: 25,
+    fontSize: width * .08,
     fontWeight: "bold",
   },
   monitorContainer: {
