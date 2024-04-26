@@ -27,8 +27,20 @@ function StackScreen() {
 function TabScreen() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Walks" component={WalkHistory} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="Walks" component={WalkHistory} 
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="list" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen name="Profile" component={Profile} 
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="account-circle" size={size} color={color} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }

@@ -19,8 +19,9 @@ export default function WalkHistory() {
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
+        style={styles.listContainer}
         data={walks}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
@@ -46,11 +47,27 @@ export default function WalkHistory() {
           </TouchableOpacity>
         )}
       />
+       <TouchableOpacity
+        style={styles.plusButtonContainer}
+        onPress={() => navigation.navigate('Walk')}
+      >
+        <Text style={{ fontSize: 20 }}>+</Text>
+      </TouchableOpacity>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  listContainer: {
+    flex: 1,
+    width: '100%',
+  },
+
   itemContainer: {
     padding: 10,
     borderBottomWidth: 1,
@@ -65,5 +82,14 @@ const styles = StyleSheet.create({
     flex: .3,
     justifyContent: 'space-around',
     alignItems: 'center',
-  }
+  },
+  plusButtonContainer: {    
+    padding: 10,
+    backgroundColor: '#2E86C1',
+    borderRadius: 50,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })
