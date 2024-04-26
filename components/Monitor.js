@@ -1,15 +1,19 @@
 import { StyleSheet, Text, View, Dimensions } from "react-native";
 import React, { useState, useEffect } from "react";
 import * as turf from "@turf/turf";
+import MapView, { Marker, Polyline } from "react-native-maps";
+
 
 // Monitor component to display the duration and distance of a walk
 export default function Monitor({ positions }) {
   const [duration, setDuration] = useState(0);
   const [distance, setDistance] = useState(0);
+  const [region, setRegion] = useState(null);
 
   useEffect(() => {
     setDuration(calculateDuration(positions));
     setDistance(calculateTotalDistance(positions));
+    zoom();
   }, [positions]);
 
   // Function to calculate the duration of the walk
@@ -46,26 +50,92 @@ export default function Monitor({ positions }) {
       return 0;
     }
   };
+
+  const zoom = () => {
+    // Calculate bounding box
+    const minLat = Math.min(...positions.map((position) => position.coords.latitude));
+    const maxLat = Math.max(...positions.map((position) => position.coords.latitude));
+    const minLng = Math.min(...positions.map((position) => position.coords.longitude));
+    const maxLng = Math.max(...positions.map((position) => position.coords.longitude));
+
+    // Calculate center
+    const centerLat = (minLat + maxLat) / 2;
+    const centerLng = (minLng + maxLng) / 2;
+
+    // Calculate deltas
+    const deltaLat = maxLat - minLat;
+    const deltaLng = maxLng - minLng;
+
+    // Set map region
+    const region = {
+      latitude: centerLat,
+      longitude: centerLng,
+      latitudeDelta: deltaLat * 1.5,
+      longitudeDelta: deltaLng * 1.5,
+    };
+    setRegion(region);
+  }
   
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Duration: {duration} mins</Text>
-      <Text style={styles.text}>Distance: {distance} km</Text>
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>Duration: {duration} mins</Text>
+        <Text style={styles.text}>Distance: {distance} km</Text>
+      </View>
+      <MapView
+        style={styles.mapContainer}
+        region={region}
+      >
+        <Polyline
+          coordinates={positions.map((position) => ({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          }))}
+          strokeWidth={5}
+          strokeColor="blue"
+        />
+        <Marker
+          coordinate={{
+            latitude: positions[0].coords.latitude,
+            longitude: positions[0].coords.longitude,
+          }}
+          title="Start"
+          description={new Date(positions[0].timestamp).toLocaleTimeString()}
+        />
+        <Marker
+          coordinate={{
+            latitude: positions[positions.length - 1].coords.latitude,
+            longitude: positions[positions.length - 1].coords.longitude,
+          }}
+          title="End"
+          description={new Date(positions[positions.length - 1].timestamp).toLocaleTimeString()}
+          pinColor="blue"
+        />
+      </MapView>
     </View>
   );
 }
 
-const { height } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-evenly",
     alignItems: "center",
-    height: height * 0.1,
+    borderWidth: 1,
+  },
+  textContainer: {
+    height: '10%',
+    justifyContent: "center",
   },
   text: {
-    fontSize: 18,
+    fontSize: width * 0.04,
     fontWeight: "bold",
+    textAlign: "center",
+  },
+  mapContainer: {
+    width: '100%',
+    height: '90%',
   },
 });

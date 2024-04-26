@@ -147,10 +147,10 @@ const styles = StyleSheet.create({
   },
   monitorContainer: {
     position: "absolute",
-    width: "100%",
-    top: "10%",
+    width: '95%',
+    height: '95%',
+    bottom: '2.5%',
     backgroundColor: "rgba(255, 255, 255, 0.9)",
-    padding: 10,
     zIndex: 100,
   },
 });
