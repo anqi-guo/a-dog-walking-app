@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
 import React, { useState, useEffect } from "react";
 import * as turf from "@turf/turf";
 
@@ -55,14 +55,17 @@ export default function Monitor({ positions }) {
   );
 }
 
+const { height } = Dimensions.get("window");
+
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    flex: 1,
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    height: height * 0.1,
   },
   text: {
     fontSize: 18,
-    marginBottom: 10,
     fontWeight: "bold",
-    marginLeft: 90,
   },
 });

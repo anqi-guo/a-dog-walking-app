@@ -149,9 +149,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
     top: "10%",
-    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
     padding: 10,
-    borderRadius: 10,
     zIndex: 100,
   },
 });
