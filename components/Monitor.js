@@ -31,6 +31,7 @@ export default function Monitor() {
       date: new Date(positions[0].timestamp).toLocaleDateString(),
       duration: duration,
       distance: distance,
+      like: false,
       positions: positions,
     };
     await addWalk(walk);
