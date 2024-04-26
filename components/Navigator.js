@@ -24,6 +24,23 @@ function StackScreen() {
   );
 }
 
+const CustomTabBarButton = ({ children, onPress }) => (
+  <TouchableOpacity
+    style={{
+      top: -30,
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: 70,
+      height: 70,
+      borderRadius: 35,
+      backgroundColor: '#2E86C1',
+    }}
+    onPress={onPress}
+  >
+    {children}
+  </TouchableOpacity>
+);
+
 export function TabScreen() {
   return (
     <Tab.Navigator>
@@ -36,9 +53,10 @@ export function TabScreen() {
       />
       <Tab.Screen name="Walk" component={Walk} 
         options={({ navigation }) => ({
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="directions-walk" size={size} color={color} />
+          tabBarIcon: () => (
+            <Entypo name="plus" size={24} color="white" />
           ),
+          tabBarLabel: () => null,
           tabBarStyle: { display: 'none' },
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.navigate("Walks")}>
@@ -46,6 +64,9 @@ export function TabScreen() {
                 <Ionicons name="arrow-back" size={24} color="black" />
               </View>
             </TouchableOpacity>
+          ),
+          tabBarButton: (props) => (
+            <CustomTabBarButton {...props} />
           ),
         })}
       />
