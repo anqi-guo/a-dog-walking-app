@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { onSnapshot, collection } from 'firebase/firestore';
 import { db } from '../firebase-files/firebaseSetup';
 import { useNavigation } from '@react-navigation/native';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 
 export default function WalkHistory() {
   const [ walks, setWalks ] = useState([]);
@@ -26,9 +27,19 @@ export default function WalkHistory() {
             style={styles.itemContainer}
             onPress={() => navigation.navigate('Monitor', { positions: item.positions, isNew: false})}
           >
-            <Text>{item.date}</Text>
-            <Text>Duration: {item.duration} minutes</Text>
-            <Text>Distance: {item.distance} km</Text>
+            <View style={styles.textContainer}>
+              <Text>{item.date}</Text>
+              <Text>Duration: {item.duration} minutes</Text>
+              <Text>Distance: {item.distance} km</Text>
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity>
+                <FontAwesome name="heart-o" size={24} color="black" />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <FontAwesome5 name="trash-alt" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
           </TouchableOpacity>
         )}
       />
@@ -41,5 +52,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#cccccc',
+    flexDirection: 'row',
   },
+  textContainer: {
+    flex: .7,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    flex: .3,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  }
 })
