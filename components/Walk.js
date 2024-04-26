@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import MapView, { Polyline } from "react-native-maps";
 import * as Location from "expo-location";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { getLocation } from "./LocationManager";
 
 //Walk screen allows the user to record walk route on a map, walk duration and time. 
 //The user can also take photos while walk the dog, the photo will be pined on the route map. 
@@ -16,50 +17,21 @@ export default function Walk() {
 
   // Get the current location and start tracking
   useEffect(() => {
-    getLocation();
-  }, []);
-
-  useEffect(() => {
-    if (isTracking) {
-      const interval = setInterval(getLocation, 1000);
-      return () => clearInterval(interval);
-    }
+    let intervalId;
+  
+    const fetchData = async () => {
+      await getLocation(setCurrentLocation, setPositions, isTracking);
+      if (isTracking) {
+        intervalId = setInterval(async () => {
+          await getLocation(setCurrentLocation, setPositions, isTracking);
+        }, 1000);
+      }
+    };
+  
+    fetchData();
+  
+    return () => clearInterval(intervalId);
   }, [isTracking]);
-
-  // Function to get the current location
-  const getLocation = () => {
-    Location.requestForegroundPermissionsAsync()
-      .then(({ status }) => {
-        if (status !== "granted") {
-          console.log("Permission not granted");
-          return;
-        }
-        return Location.getCurrentPositionAsync({});
-      })
-      .then((location) => {
-        if (location) {
-          setCurrentLocation(location);
-          if (isTracking) {
-            setPositions((prevPositions) => {
-              if (
-                prevPositions.length === 0 ||
-                location.coords.latitude !==
-                  prevPositions[prevPositions.length - 1].latitude ||
-                location.coords.longitude !==
-                  prevPositions[prevPositions.length - 1].longitude
-              ) {
-                return [...prevPositions, location];
-              } else {
-                return prevPositions;
-              }
-            });
-          }
-        }
-      })
-      .catch((error) => {
-        console.log("Error getting location", error);
-      });
-  };
 
   // Function to toggle tracking
   const handleToggleTracking = async() => {
