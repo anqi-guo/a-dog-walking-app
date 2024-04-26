@@ -1,40 +1,170 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import MapView from 'react-native-maps'
-import LocationManager, { verifyPermissions } from './LocationManager'
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import MapView, { Polyline } from "react-native-maps";
+import * as Location from "expo-location";
+import Monitor from "./Monitor";
+import turf from "@turf/turf";
 
+//Walk screen allows the user to record walk route on a map, walk duration and time. 
+//The user can also take photos while walk the dog, the photo will be pined on the route map. 
 export default function Home() {
+  const [positions, setPositions] = useState([]);
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [isTracking, setIsTracking] = useState(false);
+  const [showMonitor, setShowMonitor] = useState(false);
+
+  const mapRef = useRef(null);
+
+  // Get the current location and start tracking
   useEffect(() => {
-    verifyPermissions();
-  }, []);
+    if (!currentLocation) {
+      getLocation();
+    }
+
+    if (isTracking) {
+      const interval = setInterval(getLocation, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [currentLocation, isTracking]);
+
+  // Function to get the current location
+  const getLocation = () => {
+    Location.requestForegroundPermissionsAsync()
+      .then(({ status }) => {
+        if (status !== "granted") {
+          console.log("Permission not granted");
+          return;
+        }
+        return Location.getCurrentPositionAsync({});
+      })
+      .then((location) => {
+        if (location) {
+          setCurrentLocation(location);
+          if (isTracking) {
+            setPositions((prevPositions) => {
+              if (
+                prevPositions.length === 0 ||
+                location.coords.latitude !==
+                  prevPositions[prevPositions.length - 1].latitude ||
+                location.coords.longitude !==
+                  prevPositions[prevPositions.length - 1].longitude
+              ) {
+                return [...prevPositions, location];
+              } else {
+                return prevPositions;
+              }
+            });
+            handleCenterMap();
+          }
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting location", error);
+      });
+  };
+
+  // Function to toggle tracking
+  const handleToggleTracking = () => {
+    if (isTracking) { // If the user stops the walk
+      if (positions.length < 2) {
+        alert("You need to walk more to record a walk!");
+      } 
+      setShowMonitor(true)
+    } else {
+      setPositions([]);
+      handleCenterMap();
+      setShowMonitor(false);
+    }
+    setIsTracking((prevIsTracking) => !prevIsTracking);
+  };
+
+  // Function to center the map on the current location
+  const handleCenterMap = () => {
+    if (currentLocation) {
+      mapRef.current.animateToRegion({
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
+      });
+    }
+  };
+
+  if (!currentLocation) {
+    return;
+  }
 
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
         style={styles.map}
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
+          latitudeDelta: 0.005,
+          longitudeDelta: 0.005,
         }}
-        provider='google'
         showsUserLocation={true}
-        showsMyLocationButton={true}
-        loadingEnabled={true}
-      />
-      <LocationManager />
+        followsUserLocation={true}
+        provider="google"
+      >
+        <Polyline
+          coordinates={positions.map((position) => ({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          }))}
+          lineCap='round'
+          strokeWidth={8}
+          strokeColor='#2E86C1'
+          lineDashPattern={[1, 0]}
+        />
+      </MapView>
+      {showMonitor && (
+        <View style={styles.monitorContainer}>
+          <Monitor positions={positions} />
+        </View>
+      )}
+      <View style={{ flexDirection: "row" }}>
+        <TouchableOpacity style={styles.button} onPress={handleToggleTracking}>
+          <Text style={styles.buttonText}>{isTracking ? "End" : "Go"}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-})
+  button: {
+    backgroundColor: '#2E86C1',
+    padding: 10,
+    borderRadius: 40,
+    width: 80,
+    height: 80,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 20,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+  monitorContainer: {
+    position: "absolute",
+    width: "100%",
+    top: "10%",
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    padding: 10,
+    borderRadius: 10,
+    zIndex: 100,
+  },
+});
