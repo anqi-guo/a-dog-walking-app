@@ -34,10 +34,12 @@ export default function WalkHistory() {
               <Text>Distance: {item.distance} km</Text>
             </View>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity>
-                <FontAwesome name="heart-o" size={24} color="black" />
+              <TouchableOpacity onPress={async() => await updateWalk(item.id, {like: !item.like})}>
+                {item.like 
+                ? <FontAwesome name="heart" size={24} color="red" /> 
+                : <FontAwesome name="heart-o" size={24} color="black" /> }
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => deleteWalk(item.id)}>
+              <TouchableOpacity onPress={async() => await deleteWalk(item.id)}>
                 <FontAwesome5 name="trash-alt" size={24} color="black" />
               </TouchableOpacity>
             </View>
