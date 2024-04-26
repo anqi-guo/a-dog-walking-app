@@ -14,11 +14,10 @@ const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function StackScreen() {
+function WalkHistoryStack() {
   return (
     <Stack.Navigator screenOptions={{headerShown:false}}>
-      <Stack.Screen name="Home" component={TabScreen} />
-      <Stack.Screen name="Walk" component={Walk} />
+      <Stack.Screen name="Walks" component={WalkHistory} />
       <Stack.Screen name="Monitor" component={Monitor} />
     </Stack.Navigator>
   );
@@ -44,7 +43,7 @@ const CustomTabBarButton = ({ children, onPress }) => (
 export function TabScreen() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Walks" component={WalkHistory} 
+      <Tab.Screen name="Walks" component={WalkHistoryStack} 
         options={{
           tabBarIcon: ({ color, size }) => (
             <Entypo name="list" size={size} color={color} />
