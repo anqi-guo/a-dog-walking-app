@@ -1,15 +1,18 @@
 import 'react-native-gesture-handler';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Entypo } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import Home from './components/Home';
 import Monitor from './components/Monitor';
 import WalkHistory from './components/WalkHistory';
+import Profile from './components/Profile';
 
 const Drawer = createDrawerNavigator();
 const HomeStack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 function HomeStackScreen() {
   return (
@@ -20,21 +23,36 @@ function HomeStackScreen() {
   );
 }
 
+function DrawerScreen() {
+  return (
+    <Drawer.Navigator screenOptions={{
+      headerShown:false,
+    }}>
+      <Drawer.Screen name="HomeStack" component={HomeStackScreen} options={{title: "Walk"}}/>
+      <Drawer.Screen name="Profile" component={Profile} options={{title: "Profile"}}/>
+    </Drawer.Navigator>
+  );
+}
+
 export default function App() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator screenOptions={({ navigation }) => ({
-        headerRight: () => (
-          <TouchableOpacity onPress={
-            () => navigation.navigate('HomeStack', { screen: 'Home' })
-          }>
-            <Entypo name="home" size={22} color="black" style={{marginRight: 10}}/>
+      <Tab.Navigator screenOptions={({navigation}) => ({
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            style={{marginLeft: 10}}
+          >
+            <View style={{padding: 10}}>
+              <MaterialIcons name="menu" size={24} color="black" />
+            </View>
           </TouchableOpacity>
-        ),
-      })}>
-        <Drawer.Screen name="HomeStack" component={HomeStackScreen} options={{title: "Walk"}}/>
-        <Drawer.Screen name="WalkHistory" component={WalkHistory} options={{title: "Walk History"}}/>
-      </Drawer.Navigator>
+        )
+      })}
+      >
+        <Tab.Screen name="Walk" component={DrawerScreen} options={{tabBarIcon: () => <Entypo name="home" size={24} color="black" />}}/>
+        <Tab.Screen name="Walk History" component={WalkHistory} options={{tabBarIcon: () => <Entypo name="list" size={24} color="black" />}}/>
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }

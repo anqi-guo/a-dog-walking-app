@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/drawer": "^6.6.15",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
@@ -20,11 +21,11 @@
     "firebase": "^10.11.1",
     "react": "18.2.0",
     "react-native": "0.73.6",
-    "react-native-maps": "1.10.0",
-    "turf": "^3.0.14",
-    "turf-distance": "^3.0.12",
     "react-native-gesture-handler": "~2.14.0",
-    "react-native-reanimated": "~3.6.2"
+    "react-native-maps": "1.10.0",
+    "react-native-reanimated": "~3.6.2",
+    "turf": "^3.0.14",
+    "turf-distance": "^3.0.12"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
