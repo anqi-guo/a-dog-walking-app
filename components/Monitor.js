@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useState, useEffect } from "react";
-import turf from "@turf/turf";
+import * as turf from "@turf/turf";
 
 // Monitor component to display the duration and distance of a walk
 export default function Monitor({ positions }) {
@@ -9,7 +9,7 @@ export default function Monitor({ positions }) {
 
   useEffect(() => {
     setDuration(calculateDuration(positions));
-    setDistance((calculateTotalDistance(positions) / 1000).toFixed(2));
+    setDistance(calculateTotalDistance(positions));
   }, [positions]);
 
   // Function to calculate the duration of the walk
@@ -37,11 +37,11 @@ export default function Monitor({ positions }) {
       for (let i = 0; i < positions.length - 1; i++) {
         const from = [positions[i].coords.longitude, positions[i].coords.latitude];
         const to = [positions[i + 1].coords.longitude, positions[i + 1].coords.latitude];
-        const distance = turf.distance(from, to, { units: "meters" });
-        console.log(from, to, distance);
+        const distance = turf.distance(from, to, { units: "kilometers" });
+
         totalDistance += distance;
       }
-      return totalDistance;
+      return totalDistance.toFixed(2);
     } catch (error) {
       return 0;
     }

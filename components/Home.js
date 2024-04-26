@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from "react";
 import MapView, { Polyline } from "react-native-maps";
 import * as Location from "expo-location";
 import Monitor from "./Monitor";
-import turf from "@turf/turf";
 
 //Walk screen allows the user to record walk route on a map, walk duration and time. 
 //The user can also take photos while walk the dog, the photo will be pined on the route map. 
@@ -17,15 +16,15 @@ export default function Home() {
 
   // Get the current location and start tracking
   useEffect(() => {
-    if (!currentLocation) {
-      getLocation();
-    }
+    getLocation();
+  }, []);
 
+  useEffect(() => {
     if (isTracking) {
       const interval = setInterval(getLocation, 1000);
       return () => clearInterval(interval);
     }
-  }, [currentLocation, isTracking]);
+  }, [isTracking]);
 
   // Function to get the current location
   const getLocation = () => {
@@ -54,7 +53,6 @@ export default function Home() {
                 return prevPositions;
               }
             });
-            handleCenterMap();
           }
         }
       })
@@ -72,22 +70,9 @@ export default function Home() {
       setShowMonitor(true)
     } else {
       setPositions([]);
-      handleCenterMap();
       setShowMonitor(false);
     }
     setIsTracking((prevIsTracking) => !prevIsTracking);
-  };
-
-  // Function to center the map on the current location
-  const handleCenterMap = () => {
-    if (currentLocation) {
-      mapRef.current.animateToRegion({
-        latitude: currentLocation.coords.latitude,
-        longitude: currentLocation.coords.longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      });
-    }
   };
 
   if (!currentLocation) {
@@ -107,7 +92,8 @@ export default function Home() {
         }}
         showsUserLocation={true}
         followsUserLocation={true}
-        provider="google"
+        showsMyLocationButton={true}
+        //provider="google"
       >
         <Polyline
           coordinates={positions.map((position) => ({
@@ -115,7 +101,7 @@ export default function Home() {
             longitude: position.coords.longitude,
           }))}
           lineCap='round'
-          strokeWidth={8}
+          strokeWidth={3}
           strokeColor='#2E86C1'
           lineDashPattern={[1, 0]}
         />
