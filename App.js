@@ -5,54 +5,39 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
-import Home from './components/Home';
+import Walk from './components/Walk';
 import Monitor from './components/Monitor';
 import WalkHistory from './components/WalkHistory';
 import Profile from './components/Profile';
 
 const Drawer = createDrawerNavigator();
-const HomeStack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function HomeStackScreen() {
+function StackScreen() {
   return (
-    <HomeStack.Navigator screenOptions={{headerShown:false}}>
-      <HomeStack.Screen name="Home" component={Home} />
-      <HomeStack.Screen name="Monitor" component={Monitor} />
-    </HomeStack.Navigator>
+    <Stack.Navigator screenOptions={{headerShown:false}}>
+      <Stack.Screen name="Home" component={TabScreen} />
+      <Stack.Screen name="Walk" component={Walk} />
+      <Stack.Screen name="Monitor" component={Monitor} />
+    </Stack.Navigator>
   );
 }
 
-function DrawerScreen() {
+function TabScreen() {
   return (
-    <Drawer.Navigator screenOptions={{
-      headerShown:false,
-    }}>
-      <Drawer.Screen name="HomeStack" component={HomeStackScreen} options={{title: "Walk"}}/>
-      <Drawer.Screen name="Profile" component={Profile} options={{title: "Profile"}}/>
-    </Drawer.Navigator>
+    <Tab.Navigator>
+      <Tab.Screen name="Walks" component={WalkHistory} />
+      <Tab.Screen name="Profile" component={Profile} />
+    </Tab.Navigator>
   );
 }
+
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={({navigation}) => ({
-        headerLeft: () => (
-          <TouchableOpacity
-            onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-            style={{marginLeft: 10}}
-          >
-            <View style={{padding: 10}}>
-              <MaterialIcons name="menu" size={24} color="black" />
-            </View>
-          </TouchableOpacity>
-        )
-      })}
-      >
-        <Tab.Screen name="Walk" component={DrawerScreen} options={{tabBarIcon: () => <Entypo name="home" size={24} color="black" />}}/>
-        <Tab.Screen name="Walk History" component={WalkHistory} options={{tabBarIcon: () => <Entypo name="list" size={24} color="black" />}}/>
-      </Tab.Navigator>
+      <TabScreen />
     </NavigationContainer>
   );
 }
