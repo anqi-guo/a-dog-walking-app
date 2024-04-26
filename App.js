@@ -1,19 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import Home from './components/Home';
 import Monitor from './components/Monitor';
+import WalkHistory from './components/WalkHistory';
 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+const HomeStack = createNativeStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator screenOptions={{headerShown: false}}>
+      <HomeStack.Screen name="Home" component={Home} />
+      <HomeStack.Screen name="Monitor" component={Monitor} />
+    </HomeStack.Navigator>
+  );
+}
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Monitor" component={Monitor} />
-      </Stack.Navigator>
+      <Drawer.Navigator>
+        <Drawer.Screen name="HomeStack" component={HomeStackScreen} options={{title: "Walk"}}/>
+        <Drawer.Screen name="WalkHistory" component={WalkHistory} options={{title: "Walk History"}}/>
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
