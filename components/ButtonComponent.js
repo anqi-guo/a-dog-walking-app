@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, Image, View, Dimensions } from 'react-native'
+import { StyleSheet, TouchableOpacity, Image, Text, Dimensions } from 'react-native'
 import React from 'react'
 
 const { width, height } = Dimensions.get('window')
@@ -10,7 +10,7 @@ const icons = {
 
 function WalkScreenTopButton({ icon, pressHandler }) {
   return (
-    <TouchableOpacity style={styles.topButtonContainer} onPress={pressHandler}>
+    <TouchableOpacity style={styles.walkScreenTopButton} onPress={pressHandler}>
       <Image source={icons[icon]} style={{width: width*.09, height: width*.09}} />
     </TouchableOpacity>
   )
@@ -30,8 +30,16 @@ export function WalkScreenTopButtons() {
   )
 }
 
+export function WalkScreenBottomButton({pressHandler, isTracking}) {
+  return (
+    <TouchableOpacity style={styles.walkScreenBottomButton} onPress={pressHandler}>
+      <Text style={styles.walkScreenBottomButtonText}>{isTracking ? "End" : "Go"}</Text>
+    </TouchableOpacity>
+  )
+}
+
 const styles = StyleSheet.create({
-  topButtonContainer: {
+  walkScreenTopButton: {
     backgroundColor: 'white',
     borderRadius: width * .08,
     width: width * .16,
@@ -39,5 +47,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: height * .01,
+  },
+  walkScreenBottomButton: {
+    backgroundColor: '#2E86C1',
+    borderRadius: width * .1,
+    width: width * .2,
+    height: width * .2,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  walkScreenBottomButtonText: {
+    color: "white",
+    fontSize: width * .08,
+    fontWeight: "bold",
   },
 })
