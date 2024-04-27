@@ -28,11 +28,11 @@ export default function Monitor() {
 
   const addWalkToFirebase = async (duration, distance) => {
     const walk = {
-      date: positions[0].timestamp,
-      duration: duration,
-      distance: distance,
+      timestamp: positions[0].timestamp,
+      duration,
+      distance,
       like: false,
-      positions: positions,
+      positions,
     };
     await addWalk(walk);
   }

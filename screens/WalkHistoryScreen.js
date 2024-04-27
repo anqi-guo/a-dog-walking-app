@@ -12,7 +12,11 @@ export default function WalkHistory() {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'walks'), (snapshot) => {
-      const walks = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const walks = snapshot.docs.map((doc) => ({ 
+        id: doc.id, 
+        ...doc.data(), 
+        date: new Date(doc.data().timestamp).toLocaleDateString() }));
+      walks.sort((a, b) => b.date - a.date);
       setWalks(walks);
     });
     return unsubscribe;
