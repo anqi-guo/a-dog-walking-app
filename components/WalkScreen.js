@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { getLocation } from "./LocationManager";
 import MapComponent from "./MapComponent";
+import { WalkScreenTopButtons } from "./ButtonComponent";
 
 //Walk screen allows the user to record walk route on a map, walk duration and time. 
 //The user can also take photos while walk the dog, the photo will be pined on the route map. 
@@ -57,15 +58,7 @@ export default function Walk() {
         </TouchableOpacity>
       </View>
       <View style={styles.topButtonsContainer}>
-        <TouchableOpacity style={styles.topButtonContainer}>
-          <Image source={require('../assets/dslr-camera.png')} style={{width: width*.09, height: width*.09}} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.topButtonContainer}>
-          <Image source={require('../assets/drop.png')} style={{width: width*.09, height: width*.09}} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.topButtonContainer}>
-          <Image source={require('../assets/poop.png')} style={{width: width*.09, height: width*.09}} />
-        </TouchableOpacity>
+        <WalkScreenTopButtons/>
       </View>
     </View>
   );
@@ -83,15 +76,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: '2%',
     right: '5%',
-  },
-  topButtonContainer: {
-    backgroundColor: 'white',
-    borderRadius: width * .08,
-    width: width * .16,
-    height: width * .16,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: height * .01,
   },
   bottomButtonContainer: {
     backgroundColor: '#2E86C1',
