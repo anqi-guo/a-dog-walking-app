@@ -1,5 +1,6 @@
 import { StyleSheet, TouchableOpacity, Image, Text, Dimensions } from 'react-native'
 import React from 'react'
+import { useWalk } from './WalkContext'
 
 const { width, height } = Dimensions.get('window')
 const icons = {
@@ -30,7 +31,8 @@ export function WalkScreenTopButtons() {
   )
 }
 
-export function WalkScreenBottomButton({pressHandler, isTracking}) {
+export function WalkScreenBottomButton({pressHandler}) {
+  const { isTracking } = useWalk();
   return (
     <TouchableOpacity style={styles.walkScreenBottomButton} onPress={pressHandler}>
       <Text style={styles.walkScreenBottomButtonText}>{isTracking ? "End" : "Go"}</Text>

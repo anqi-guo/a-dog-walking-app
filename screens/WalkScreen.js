@@ -4,14 +4,15 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { getLocation } from "../components/LocationManager";
 import MapComponent from "../components/MapComponent";
 import { WalkScreenTopButtons, WalkScreenBottomButton } from "../components/ButtonComponent";
+import { useWalk } from "../components/WalkContext";
 
 //Walk screen allows the user to record walk route on a map, walk duration and time. 
 //The user can also take photos while walk the dog, the photo will be pined on the route map. 
 export default function Walk() {
-  const [positions, setPositions] = useState([]);
-  const [currentLocation, setCurrentLocation] = useState(null);
-  const [isTracking, setIsTracking] = useState(false);
-
+  // const [positions, setPositions] = useState([]);
+  // const [currentLocation, setCurrentLocation] = useState(null);
+  // const [isTracking, setIsTracking] = useState(false);
+  const { positions, setPositions, currentLocation, setCurrentLocation, isTracking, setIsTracking } = useWalk();
   const mapRef = useRef(null);
   const navigation = useNavigation();
 
@@ -51,12 +52,12 @@ export default function Walk() {
 
   return (
     <View style={styles.container}>
-      <MapComponent mapRef={mapRef} positions={positions} currentLocation={currentLocation} />
+      <MapComponent mapRef={mapRef}/>
       <View style={styles.topButtonsContainer}>
         <WalkScreenTopButtons/>
       </View>
       <View style={styles.bottomButtonContainer}>
-        <WalkScreenBottomButton pressHandler={handleToggleTracking} isTracking={isTracking}/>
+        <WalkScreenBottomButton pressHandler={handleToggleTracking}/>
       </View>
     </View>
   );

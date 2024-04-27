@@ -1,9 +1,11 @@
 import React from 'react';
 import MapView, { Polyline } from 'react-native-maps';
 import { StyleSheet } from 'react-native';
+import { useWalk } from './WalkContext';
 
-export default function MapComponent({ mapRef, positions, currentLocation}) {
-
+export default function MapComponent({ mapRef}) {
+  const { positions, currentLocation } = useWalk();
+  
   return (
     <MapView
       ref={mapRef}
