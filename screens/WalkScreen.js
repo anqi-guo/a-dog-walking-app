@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { getLocation } from "./LocationManager";
-import MapComponent from "./MapComponent";
-import { WalkScreenTopButtons, WalkScreenBottomButton } from "./ButtonComponent";
+import { getLocation } from "../components/LocationManager";
+import MapComponent from "../components/MapComponent";
+import { WalkScreenTopButtons, WalkScreenBottomButton } from "../components/ButtonComponent";
 
 //Walk screen allows the user to record walk route on a map, walk duration and time. 
 //The user can also take photos while walk the dog, the photo will be pined on the route map. 
