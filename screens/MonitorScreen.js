@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import * as turf from "@turf/turf";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { addWalk } from "../firebase-files/firebaseHelper";
+import { useWalk } from "../components/WalkContext";
 
 // Monitor component to display the duration and distance of a walk
 export default function Monitor() {
@@ -12,8 +13,9 @@ export default function Monitor() {
   const [region, setRegion] = useState(null);
 
   const route = useRoute();
-  const positions = route.params.positions;
   const isNew = route.params.isNew;
+  const positions = route.params.positions;
+  const { pees, poops } = useWalk();
 
   useEffect(() => {
     const duration = calculateDuration(positions);
@@ -33,6 +35,8 @@ export default function Monitor() {
       distance,
       like: false,
       positions,
+      pees,
+      poops,
     };
     await addWalk(walk);
   }
@@ -132,6 +136,32 @@ export default function Monitor() {
           description={new Date(positions[positions.length - 1].timestamp).toLocaleTimeString()}
           pinColor="blue"
         />
+        {pees.map((pee, index) => (
+          <Marker
+            key={index}
+            coordinate={{
+              latitude: pee.coords.latitude,
+              longitude: pee.coords.longitude,
+            }}
+            title="Pee"
+            description={new Date(pee.timestamp).toLocaleTimeString()}
+          >
+            <Image source={require('../assets/drop.png')} style={{width: width*.08, height: width*.08}} />
+          </Marker>
+        ))}
+        {poops.map((poop, index) => (
+          <Marker
+            key={index}
+            coordinate={{
+              latitude: poop.coords.latitude,
+              longitude: poop.coords.longitude,
+            }}
+            title="Poop"
+            description={new Date(poop.timestamp).toLocaleTimeString()}
+          >
+            <Image source={require('../assets/poop.png')} style={{width: width*.09, height: width*.09}} />
+          </Marker>
+        ))}
       </MapView>
     </View>
   );

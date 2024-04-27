@@ -5,6 +5,7 @@ import { getLocation } from "../components/LocationManager";
 import MapComponent from "../components/MapComponent";
 import { WalkScreenTopButton, WalkScreenBottomButton } from "../components/ButtonComponent";
 import { useWalk } from "../components/WalkContext";
+import { set } from "firebase/database";
 
 //Walk screen allows the user to record walk route on a map, walk duration and time. 
 //The user can also take photos while walk the dog, the photo will be pined on the route map. 
@@ -12,7 +13,13 @@ export default function Walk() {
   // const [positions, setPositions] = useState([]);
   // const [currentLocation, setCurrentLocation] = useState(null);
   // const [isTracking, setIsTracking] = useState(false);
-  const { positions, setPositions, currentLocation, setCurrentLocation, isTracking, setIsTracking } = useWalk();
+  const { 
+    positions, setPositions, 
+    currentLocation, setCurrentLocation, 
+    isTracking, setIsTracking,
+    pees, setPees,
+    poops, setPoops, 
+  } = useWalk();
   const mapRef = useRef(null);
   const navigation = useNavigation();
 
@@ -58,11 +65,13 @@ export default function Walk() {
   // Function to handle the pee press
   const peePressHandler = () => {
     console.log("Pee pressed");
+    setPees((prevPees) => [...prevPees, currentLocation]);
   };
 
   // Function to handle the poop press
   const poopPressHandler = () => {
     console.log("Poop pressed");
+    setPoops((prevPoops) => [...prevPoops, currentLocation]);
   };
 
   return (
