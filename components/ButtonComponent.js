@@ -9,25 +9,11 @@ const icons = {
   poop: require('../assets/poop.png'),
 }
 
-function WalkScreenTopButton({ icon, pressHandler }) {
+export function WalkScreenTopButton({ icon, pressHandler }) {
   return (
     <TouchableOpacity style={styles.walkScreenTopButton} onPress={pressHandler}>
       <Image source={icons[icon]} style={{width: width*.09, height: width*.09}} />
     </TouchableOpacity>
-  )
-}
-
-function pressHandler(icon) {
-  console.log(`Pressed ${icon}`)
-}
-
-export function WalkScreenTopButtons() {
-  return (
-    <>
-      <WalkScreenTopButton icon="camera" pressHandler={() => pressHandler('camera')} />
-      <WalkScreenTopButton icon="drop" pressHandler={() => pressHandler('drop')} />
-      <WalkScreenTopButton icon="poop" pressHandler={() => pressHandler('poop')} />
-    </>
   )
 }
 

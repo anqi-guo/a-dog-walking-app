@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { getLocation } from "../components/LocationManager";
 import MapComponent from "../components/MapComponent";
-import { WalkScreenTopButtons, WalkScreenBottomButton } from "../components/ButtonComponent";
+import { WalkScreenTopButton, WalkScreenBottomButton } from "../components/ButtonComponent";
 import { useWalk } from "../components/WalkContext";
 
 //Walk screen allows the user to record walk route on a map, walk duration and time. 
@@ -35,7 +35,7 @@ export default function Walk() {
   }, [isTracking]);
 
   // Function to toggle tracking
-  const handleToggleTracking = async() => {
+  const toggleTrackingHandler = async() => {
     if (isTracking) { // If the user stops the walk
       if (positions.length < 2) {
         alert("You need to walk more to record a walk!");
@@ -50,14 +50,31 @@ export default function Walk() {
     return;
   }
 
+  // Function to handle the camera press
+  const cameraPressHandler = () => {
+    console.log("Camera pressed");
+  };
+
+  // Function to handle the pee press
+  const peePressHandler = () => {
+    console.log("Pee pressed");
+  };
+
+  // Function to handle the poop press
+  const poopPressHandler = () => {
+    console.log("Poop pressed");
+  };
+
   return (
     <View style={styles.container}>
       <MapComponent mapRef={mapRef}/>
       <View style={styles.topButtonsContainer}>
-        <WalkScreenTopButtons/>
+        <WalkScreenTopButton icon="camera" pressHandler={cameraPressHandler}/>
+        <WalkScreenTopButton icon="drop" pressHandler={peePressHandler}/>
+        <WalkScreenTopButton icon="poop" pressHandler={poopPressHandler}/>
       </View>
       <View style={styles.bottomButtonContainer}>
-        <WalkScreenBottomButton pressHandler={handleToggleTracking}/>
+        <WalkScreenBottomButton pressHandler={toggleTrackingHandler}/>
       </View>
     </View>
   );
