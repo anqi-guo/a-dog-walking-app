@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { onSnapshot, collection } from 'firebase/firestore';
 import { db } from '../firebase-files/firebaseSetup';
@@ -24,6 +24,12 @@ export default function WalkHistory() {
 
   return (
     <View style={styles.container}>
+      {walks.length === 0 ? ( 
+      <View style={{flex:1, alignItems:"center", justifyContent:"center"}}>
+        <Image source={require('../assets/walking-the-dog.png')} style={{width: 100, height: 100, marginBottom: 20}} />
+        <Text>No walks recorded yet</Text>
+      </View>
+      ) : (
       <FlatList
         style={styles.listContainer}
         data={walks}
@@ -50,7 +56,7 @@ export default function WalkHistory() {
             </View>
           </TouchableOpacity>
         )}
-      />
+      />)}
     </View>
   )
 }
