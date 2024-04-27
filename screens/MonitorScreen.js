@@ -28,7 +28,7 @@ export default function Monitor() {
 
   const addWalkToFirebase = async (duration, distance) => {
     const walk = {
-      date: new Date(positions[0].timestamp).toLocaleDateString(),
+      date: positions[0].timestamp,
       duration: duration,
       distance: distance,
       like: false,
