@@ -17,7 +17,7 @@ const Tab = createBottomTabNavigator();
 function WalkHistoryStack() {
   return (
     <Stack.Navigator screenOptions={{headerShown:false}}>
-      <Stack.Screen name="Walks" component={WalkHistory} />
+      <Stack.Screen name="WalkHistory" component={WalkHistory} />
       <Stack.Screen name="Monitor" component={Monitor} />
     </Stack.Navigator>
   );
@@ -43,7 +43,7 @@ const CustomTabBarButton = ({ children, onPress }) => (
 export function TabScreen() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Walks" component={WalkHistoryStack} 
+      <Tab.Screen name="WalkHistoryStack" component={WalkHistoryStack} 
         options={{
           tabBarIcon: ({ color, size }) => (
             <Entypo name="list" size={size} color={color} />
@@ -58,7 +58,7 @@ export function TabScreen() {
           tabBarLabel: () => null,
           tabBarStyle: { display: 'none' },
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.navigate("Walks")}>
+            <TouchableOpacity onPress={() => navigation.navigate("WalkHistory")}>
               <View style={{ marginLeft: 10 }}>
                 <Ionicons name="arrow-back" size={24} color="black" />
               </View>

@@ -4,6 +4,7 @@ import MapView, { Polyline } from "react-native-maps";
 import * as Location from "expo-location";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { getLocation } from "./LocationManager";
+import MapComponent from "./MapComponent";
 
 //Walk screen allows the user to record walk route on a map, walk duration and time. 
 //The user can also take photos while walk the dog, the photo will be pined on the route map. 
@@ -51,31 +52,7 @@ export default function Walk() {
 
   return (
     <View style={styles.container}>
-      <MapView
-        ref={mapRef}
-        style={styles.map}
-        initialRegion={{
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
-        }}
-        showsUserLocation={true}
-        followsUserLocation={true}
-        showsMyLocationButton={true}
-        //provider="google"
-      >
-        <Polyline
-          coordinates={positions.map((position) => ({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          }))}
-          lineCap='round'
-          strokeWidth={3}
-          strokeColor='#2E86C1'
-          lineDashPattern={[1, 0]}
-        />
-      </MapView>
+      <MapComponent mapRef={mapRef} positions={positions} currentLocation={currentLocation} />
       <View style={{ flexDirection: "row" }}>
         <TouchableOpacity style={styles.button} onPress={handleToggleTracking}>
           <Text style={styles.buttonText}>{isTracking ? "End" : "Go"}</Text>
