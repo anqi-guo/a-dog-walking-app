@@ -1,7 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
-import MapView, { Polyline } from "react-native-maps";
-import * as Location from "expo-location";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { getLocation } from "./LocationManager";
 import MapComponent from "./MapComponent";
@@ -54,8 +52,19 @@ export default function Walk() {
     <View style={styles.container}>
       <MapComponent mapRef={mapRef} positions={positions} currentLocation={currentLocation} />
       <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity style={styles.button} onPress={handleToggleTracking}>
+        <TouchableOpacity style={styles.bottomButtonContainer} onPress={handleToggleTracking}>
           <Text style={styles.buttonText}>{isTracking ? "End" : "Go"}</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.topButtonsContainer}>
+        <TouchableOpacity style={styles.topButtonContainer}>
+          <Image source={require('../assets/dslr-camera.png')} style={{width: width*.09, height: width*.09}} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.topButtonContainer}>
+          <Image source={require('../assets/drop.png')} style={{width: width*.09, height: width*.09}} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.topButtonContainer}>
+          <Image source={require('../assets/poop.png')} style={{width: width*.09, height: width*.09}} />
         </TouchableOpacity>
       </View>
     </View>
@@ -70,10 +79,21 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
   },
-  map: {
-    ...StyleSheet.absoluteFillObject,
+  topButtonsContainer: {
+    position: "absolute",
+    top: '2%',
+    right: '5%',
   },
-  button: {
+  topButtonContainer: {
+    backgroundColor: 'white',
+    borderRadius: width * .08,
+    width: width * .16,
+    height: width * .16,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: height * .01,
+  },
+  bottomButtonContainer: {
     backgroundColor: '#2E86C1',
     borderRadius: width * .1,
     width: width * .2,
