@@ -5,10 +5,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Entypo, MaterialIcons, Ionicons } from '@expo/vector-icons';
-import Walk from './Walk';
-import Monitor from './Monitor';
-import WalkHistory from './WalkHistory';
-import Profile from './Profile';
+import Walk from './WalkScreen';
+import Monitor from './MonitorScreen';
+import WalkHistory from './WalkHistoryScreen';
+import Profile from './ProfileScreen';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
